@@ -1,0 +1,203 @@
+\begin{Example}
+	使用线性回归模型拟合糖尿病数据集\footnote{实现的程序见例\ref{例1}}。
+\end{Example}
+
+\begin{Example}
+	使用非负线性回归模型拟合回归数据集\footnote{实现的程序见例\ref{例2}}。
+\end{Example}
+
+\begin{Example}
+	使用岭回归模型拟合回归数据集\footnote{实现的程序见例\ref{例3}}。
+	
+	岭回归通过对系数的大小施加惩罚来解决普通最小二乘法的一些问题。岭回归的系数的估计是最小化惩罚的残差平方和：
+	\[
+	\mathop{\arg\min}\limits_{\beta}\Vert y-X\beta\Vert^2_2+\alpha \Vert\beta\Vert^2_2
+	\]
+	其中$\alpha>0$。它越大，惩罚力度越大，对共线性问题的解决越稳健。
+\end{Example}
+
+\begin{Example}
+	使用岭回归分类器对稀疏特征进行分类\footnote{实现的程序见例\ref{例4}}。
+	
+	岭回归分类器是将针对目标y的取值$\{-1,1\}$进行回归，本质上仍然是一个回归问题。
+
+	岭回归分类器也叫做线性核的最小二乘支持向量机。
+\end{Example}
+
+\begin{Example}
+	使用岭回归配合CV选择的方法进行最优参数选择\footnote{实现的程序见例\ref{例5}}。
+\end{Example}
+
+\begin{Example}
+	使用Lasso回归模型和弹性网回归模型拟合数据集，并比较二者的结果\footnote{实现的程序见例\ref{例6}}。
+
+	Lasso回归模型是在高维稀疏假定下的一种模型，它是最小化下面的目标函数来求解系数的：
+	\[
+		\mathop{\arg\min}\limits_{\beta}\dfrac{1}{2n}\Vert y-X\beta\Vert^2_2+\alpha \Vert\beta\Vert_1
+	\]
+\end{Example}
+
+\begin{Example}
+	使用Lasso回归模型拟合openml数据集，wage是预测变量\footnote{实现的程序见例\ref{例7}}。
+\end{Example}
+
+\begin{Example}
+	使用信息准则IC，建立Lasso回归模型做模型选择\footnote{实现的程序见例\ref{例8}}。
+\end{Example}
+
+\begin{Example}
+	使用交叉验证CV，建立Lasso回归模型做模型选择\footnote{实现的程序见例\ref{例9}}。
+\end{Example}
+
+\begin{Example}
+	使用信息准则IC，建立Lasso回归模型在糖尿病数据集上做模型选择\footnote{实现的程序见例\ref{例10}}。
+\end{Example}
+
+\begin{Example}
+	使用MultiLasso回归模型，同时对多个回归模型选择同一组特征\footnote{实现的程序见例\ref{例11}}。
+
+	MultiLasso最小化的目标函数如下：
+	\[
+	\mathop{\arg\min}\limits_{W}\dfrac{1}{2n}\Vert Y-XW\Vert^2_{Fro}+\alpha\Vert W\Vert_{21}
+	\]
+	其中$\Vert W\Vert_{21}=\sum\limits_{i}\sqrt{\sum\limits_{j}a^2_{ij}}$，$\Vert A\Vert_{Fro}=\sqrt{\sum\limits_{ij}a^2_{ij}}$。
+\end{Example}
+
+\begin{Example}
+	建立弹性网回归模型对数据拟合\footnote{实现的程序见例\ref{例12}}。
+
+	弹性网Elastic Net最小化的目标函数如下：
+	\[
+	\mathop{\arg\min}\limits_{\bm{\beta}}\dfrac{1}{2n}\Vert \bm{y}-\bm{X\beta}\Vert^2_2+\alpha\rho\Vert \bm{\beta}\Vert_1+\dfrac{\alpha(1-\rho)}{2}\Vert\bm{\beta}\Vert^2_2
+	\]
+	其中$\rho$表示$l_1$正则化的比例，越大越稀疏。
+\end{Example}
+
+\begin{Example}
+	绘制Lasso和弹性网回归模型的系数路径图\footnote{实现的程序见例\ref{例13}}。
+\end{Example}
+
+\begin{Example}
+	使用最小角回归算法求解lasso模型，并构建回归模型\footnote{实现的程序见例\ref{例14}}。
+\end{Example}
+
+\begin{Example}
+	使用正交匹配追踪求解带有下面这种约束的线性回归问题\footnote{实现的程序见例\ref{例15}}。
+	\[
+		\begin{aligned}
+	&\mathop{\arg\min}\limits_{\bm{\beta}}\Vert \bm{y}-\bm{X\beta}\Vert^2_2\\
+	&s.t.\;\Vert \bm{\beta}\Vert_0\le t	\quad\text{or}\quad s.t.\Vert \bm{y}-\bm{X\beta}\Vert^2_2\le eps
+		\end{aligned}
+	\]
+\end{Example}
+
+\begin{Example}
+	使用贝叶斯岭回归模型来拟合数据\footnote{实现的程序见例\ref{例16}}。
+	
+	贝叶斯岭回归使用的先验分布是：
+	\[
+	p(\bm{\beta}|\lambda)=N(\bm{\beta}|\bm{0},\lambda^{-1}\bm{I})
+	\]
+	假定响应变量$\bm{y}$的分布是
+	\[
+	p(\bm{y}|\bm{X},\bm{\beta},\alpha)=N(\bm{y}|\bm{X\beta},\alpha)
+	\]
+	所以后验分布是：
+	\[
+	p(\bm{\beta}|\bm{y})\propto p(\bm{y}|\bm{X},\bm{\beta},\alpha)\cdot p(\bm{\beta}|\lambda)
+	\]
+	而参数$\alpha$和$\lambda$是来自伽马分布的，因此严格地讲后验分布还需要乘以伽马分布的概率密度。
+\end{Example}
+
+\begin{Example}
+	使用$l_1$惩罚来做多项logistic回归模型\footnote{实现的程序见例\ref{例17}}。
+
+	带惩罚项的多项logistic回归模型的目标函数如下：
+	\[
+	\mathop{\arg\min}\limits_{\bm{\beta}}-C\sum^n_{i=1}\sum^{K-1}_{k=0}	[y_i=k]\log(\hat{p}_k(\bm{X}_i))+r(\bm{\beta})
+	\]
+	其中的$\hat{p}_k(\bm{X}_i)$表达如下：
+	\[
+		\hat{p}_k(\bm{X}_i)=\mathrm{exp}\{\bm{X}_i\bm{\beta}_k\}/\sum^{K-1}\limits_{l=0}\mathrm{exp}\{\bm{X}_i\bm{\beta}_l\}
+	\]
+	其中的$\bm{\beta}$表示由$\bm{\beta}_l,\;l=1,2\cdots,K$构成的系数矩阵。
+	
+	其中的$r(\bm{\beta})$表示对系数矩阵的惩罚项，具体有$l_1,\;l_2$惩罚以及弹性网惩罚。
+	\[
+	r(\bm{\beta})=\left\{\begin{array}{l}
+		\Vert \bm{\beta}\Vert_{1,1}=\sum^n_{i=1}\sum^K_{j=1}\vert\beta_{ij}\vert\\
+		\\
+		\dfrac{1}{2}\Vert \bm{\beta}\Vert^2_{F}=\dfrac{1}{2}\sum^n_{i=1}\sum^K_{j=1}\beta^2_{ij}\\
+		\\
+		\dfrac{1-\rho}{2}\Vert \bm{\beta}\Vert^2_{F}+\rho\Vert \bm{\beta}\Vert_{1,1}\\
+	\end{array}\right.
+	\]
+\end{Example}
+
+\begin{Example}
+	分别使用$l_1$惩罚与不使用惩罚项来做二元logistic回归模型，在iris数据集上\footnote{实现的程序见例\ref{例18}}。
+
+	带惩罚项的二元logistic回归模型的目标函数如下：
+	\[
+	\begin{aligned}
+	&\mathop{\arg\min}\limits_{\bm{\beta}}-C\sum^n_{i=1}[y_i\log(\hat{p}_k(\bm{X}_i))\\
+	&+(1-y_i)\log(1-\hat{p}_k(\bm{X}_i))]+r(\bm{\beta})
+	\end{aligned}
+	\]
+	其中的$\hat{p}_k(\bm{X}_i)$表达如下：
+	\[
+		\hat{p}_k(\bm{X}_i)=\mathrm{exp}\{\bm{X}_i\bm{\beta}_k\}/(1+\mathrm{exp}\{\bm{X}_i\bm{\beta}_l\})
+	\]
+\end{Example}
+
+\begin{Example}
+	对于多个类别的数据，建立Logistic回归模型进行分类，分别比较ovr方法和multibinomial方法下的分类效果\footnote{实现的程序见例\ref{例19}}。
+\end{Example}
+
+\begin{Example}
+	使用泊松回归来拟合数据\footnote{实现的程序见例\ref{例20}}。
+\end{Example}
+
+\begin{Example}
+	使用稳健回归来拟合数据，RANSAC算法\footnote{实现的程序见例\ref{例21}}。
+\end{Example}
+
+\begin{Example}
+	使用稳健回归来拟合数据，Theil-Sen算法\footnote{实现的程序见例\ref{例22}}。
+\end{Example}
+
+\begin{Example}
+	使用稳健回归模型来拟合数据，Huber Regression算法\footnote{实现的程序见例\ref{例23}}。
+
+	HuberRegression的目标函数如下：
+	\[
+	\mathop{\arg\min}\limits_{\beta, \sigma}\sum^n_{i=1}(\sigma+H_{\varepsilon}(\dfrac{X^T_i\beta-y_i}{\sigma})\sigma)+\alpha\Vert \beta\Vert^2_2
+	\]
+	其中的$H_{\varepsilon}(\cdot)$如下定义：
+	\[
+		H_{\varepsilon}(z)=\left\{
+			\begin{array}{lr}
+				z^2,&\vert z\vert<\varepsilon\\
+				2\varepsilon\vert z\vert-\varepsilon^2,&otherwise
+		\end{array}\right.
+	\]
+\end{Example}
+
+\begin{Example}
+	使用分位数回归模型来拟合数据\footnote{实现的程序见例\ref{例24}}。
+
+	分位数回归的目标函数如下：
+	\[
+	\mathop{\arg\min}\limits_{\beta}\dfrac{1}{n}\sum\limits_i PB_{q}(y_i-X^T_i\beta)+\alpha\Vert\beta\Vert_1
+	\]
+	其中的$PB_{q}(\cdot)$表示如下：
+	\[
+	PB_{q}(t)=\left\{
+		\begin{array}{lr}
+			qt,&t>0\\
+			0,&t=0\\
+			(q-1)t,&t<0
+		\end{array}
+	\right.
+	\]
+\end{Example}

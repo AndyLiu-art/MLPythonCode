@@ -1,0 +1,85 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 导入操作系统库}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{c+c1}{\PYZsh{} 更改工作目录}
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{softwares}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{applied statistics}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{pythoncodelearning}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{chap1}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sourcecode}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 导入基础计算库}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{c+c1}{\PYZsh{} 导入绘图库}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{c+c1}{\PYZsh{} 导入回归器}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{RANSACRegressor}\PY{p}{,} \PY{n}{LinearRegression}
+\PY{c+c1}{\PYZsh{} 导入数据集生成工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{n}{make\PYZus{}regression}
+\PY{c+c1}{\PYZsh{} 导入绘图库中的字体管理包}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{font\PYZus{}manager}
+\PY{c+c1}{\PYZsh{} 实现中文字符正常显示}
+\PY{n}{font} \PY{o}{=} \PY{n}{font\PYZus{}manager}\PY{o}{.}\PY{n}{FontProperties}\PY{p}{(}\PY{n}{fname}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Windows}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Fonts}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{SimKai.ttf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 使用seaborn风格绘图}
+\PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{seaborn\PYZhy{}v0\PYZus{}8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 设置样本量和离群值的样本量}
+\PY{n}{n\PYZus{}samples} \PY{o}{=} \PY{l+m+mi}{1000}
+\PY{n}{n\PYZus{}outliers} \PY{o}{=} \PY{l+m+mi}{50}
+\PY{c+c1}{\PYZsh{} 生成数据集}
+\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{coef} \PY{o}{=} \PY{n}{make\PYZus{}regression}\PY{p}{(}
+    \PY{n}{n\PYZus{}samples}\PY{o}{=}\PY{n}{n\PYZus{}samples}\PY{p}{,}
+    \PY{n}{n\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+    \PY{n}{n\PYZus{}informative}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+    \PY{n}{noise}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+    \PY{n}{coef}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+    \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 添加离群值}
+\PY{c+c1}{\PYZsh{} Add outlier data}
+\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{n}{n\PYZus{}outliers}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{3} \PY{o}{+} \PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{p}{(}\PY{n}{n\PYZus{}outliers}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{y}\PY{p}{[}\PY{p}{:}\PY{n}{n\PYZus{}outliers}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{3} \PY{o}{+} \PY{l+m+mi}{10} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{n}{n\PYZus{}outliers}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 构建线性模型}
+\PY{n}{lr} \PY{o}{=} \PY{n}{LinearRegression}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 模型拟合}
+\PY{n}{lr}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 构建稳健回归}
+\PY{n}{ransac} \PY{o}{=} \PY{n}{RANSACRegressor}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 模型拟合}
+\PY{n}{ransac}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+\PY{n}{inlier\PYZus{}mask} \PY{o}{=} \PY{n}{ransac}\PY{o}{.}\PY{n}{inlier\PYZus{}mask\PYZus{}}
+\PY{n}{outlier\PYZus{}mask} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{logical\PYZus{}not}\PY{p}{(}\PY{n}{inlier\PYZus{}mask}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 预测}
+\PY{n}{line\PYZus{}X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{X}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 线性模型预测}
+\PY{n}{line\PYZus{}y} \PY{o}{=} \PY{n}{lr}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{line\PYZus{}X}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 稳健回归预测}
+\PY{n}{line\PYZus{}y\PYZus{}ransac} \PY{o}{=} \PY{n}{ransac}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{line\PYZus{}X}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Estimated coefficients (true, linear regression, RANSAC):}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{coef}\PY{p}{,} \PY{n}{lr}\PY{o}{.}\PY{n}{coef\PYZus{}}\PY{p}{,} \PY{n}{ransac}\PY{o}{.}\PY{n}{estimator\PYZus{}}\PY{o}{.}\PY{n}{coef\PYZus{}}\PY{p}{,}\PY{n}{sep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{,} \PY{n}{tight\PYZus{}layout}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 散点图}
+\PY{n}{ax}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}
+    \PY{n}{X}\PY{p}{[}\PY{n}{inlier\PYZus{}mask}\PY{p}{]}\PY{p}{,} \PY{n}{y}\PY{p}{[}\PY{n}{inlier\PYZus{}mask}\PY{p}{]}\PY{p}{,} 
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{yellowgreen}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Inliers}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}
+    \PY{n}{X}\PY{p}{[}\PY{n}{outlier\PYZus{}mask}\PY{p}{]}\PY{p}{,} \PY{n}{y}\PY{p}{[}\PY{n}{outlier\PYZus{}mask}\PY{p}{]}\PY{p}{,} 
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gold}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Outliers}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{line\PYZus{}X}\PY{p}{,} \PY{n}{line\PYZus{}y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{navy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Linear regressor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}
+    \PY{n}{line\PYZus{}X}\PY{p}{,}
+    \PY{n}{line\PYZus{}y\PYZus{}ransac}\PY{p}{,}
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cornflowerblue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}
+    \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RANSAC regressor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lower right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Input}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../codeimage/code27.pdf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+Estimated coefficients (true, linear regression, RANSAC):
+82.1903908407869
+[54.17236387]
+[82.08533159]
+\end{Verbatim}

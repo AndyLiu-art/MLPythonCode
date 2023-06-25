@@ -1,0 +1,102 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 导入操作系统库}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{c+c1}{\PYZsh{} 更改工作目录}
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{softwares}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{applied statistics}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{pythoncodelearning}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{chap1}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sourcecode}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 导入基础计算库}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{c+c1}{\PYZsh{} 导入绘图库}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{c+c1}{\PYZsh{} 导入数据集获取工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{n}{load\PYZus{}diabetes}
+\PY{c+c1}{\PYZsh{} 导入标准化处理工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{StandardScaler}
+\PY{c+c1}{\PYZsh{} 导入LassoCV模型}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{LassoLarsIC}
+\PY{c+c1}{\PYZsh{} 导入管道操作}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{pipeline} \PY{k+kn}{import} \PY{n}{make\PYZus{}pipeline}
+\PY{c+c1}{\PYZsh{} 导入绘图库中的字体管理包}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{font\PYZus{}manager}
+\PY{c+c1}{\PYZsh{} 实现中文字符正常显示}
+\PY{n}{font} \PY{o}{=} \PY{n}{font\PYZus{}manager}\PY{o}{.}\PY{n}{FontProperties}\PY{p}{(}\PY{n}{fname}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Windows}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Fonts}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{SimKai.ttf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 使用seaborn风格绘图}
+\PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{seaborn\PYZhy{}v0\PYZus{}8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 导入数据集}
+\PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{load\PYZus{}diabetes}\PY{p}{(}\PY{n}{return\PYZus{}X\PYZus{}y}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{as\PYZus{}frame}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 样本量}
+\PY{n}{n\PYZus{}samples} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 构建模型}
+\PY{n}{lasso\PYZus{}lars\PYZus{}ic} \PY{o}{=} \PY{n}{make\PYZus{}pipeline}\PY{p}{(}
+    \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}\PY{p}{,} 
+    \PY{n}{LassoLarsIC}\PY{p}{(}\PY{n}{criterion}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{aic}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 模型拟合}
+\PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 重新定义信息准则}
+\PY{k}{def} \PY{n+nf}{zou\PYZus{}et\PYZus{}al\PYZus{}criterion\PYZus{}rescaling}\PY{p}{(}\PY{n}{criterion}\PY{p}{,} \PY{n}{n\PYZus{}samples}\PY{p}{,} \PY{n}{noise\PYZus{}variance}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Rescale the information criterion to follow the definition of Zou et al.\PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{return} \PY{n}{criterion} \PY{o}{\PYZhy{}} \PY{n}{n\PYZus{}samples} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{n}{noise\PYZus{}variance}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{n\PYZus{}samples}
+\PY{c+c1}{\PYZsh{} 缩放后的AIC}
+\PY{n}{aic\PYZus{}criterion} \PY{o}{=} \PY{n}{zou\PYZus{}et\PYZus{}al\PYZus{}criterion\PYZus{}rescaling}\PY{p}{(}
+    \PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{criterion\PYZus{}}\PY{p}{,}
+    \PY{n}{n\PYZus{}samples}\PY{p}{,}
+    \PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{noise\PYZus{}variance\PYZus{}}\PY{p}{,}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 选出AIC最小对应的那个alpha所在的下标}
+\PY{n}{index\PYZus{}alpha\PYZus{}path\PYZus{}aic} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{flatnonzero}\PY{p}{(}
+    \PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{alphas\PYZus{}} \PY{o}{==} \PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{alpha\PYZus{}}
+\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 不用重新拟合模型，直接修改参数即可，这就是pipeline的好处}
+\PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{o}{.}\PY{n}{set\PYZus{}params}\PY{p}{(}
+    \PY{n}{lassolarsic\PYZus{}\PYZus{}criterion}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bic}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 模型拟合}
+\PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 缩放后的BIC}
+\PY{n}{bic\PYZus{}criterion} \PY{o}{=} \PY{n}{zou\PYZus{}et\PYZus{}al\PYZus{}criterion\PYZus{}rescaling}\PY{p}{(}
+    \PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{criterion\PYZus{}}\PY{p}{,}
+    \PY{n}{n\PYZus{}samples}\PY{p}{,}
+    \PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{noise\PYZus{}variance\PYZus{}}\PY{p}{,}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 选出BIC最小对应的那个alpha所在的下标}
+\PY{n}{index\PYZus{}alpha\PYZus{}path\PYZus{}bic} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{flatnonzero}\PY{p}{(}
+    \PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{alphas\PYZus{}} \PY{o}{==} \PY{n}{lasso\PYZus{}lars\PYZus{}ic}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{alpha\PYZus{}}
+\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 开始绘图}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}
+    \PY{n}{aic\PYZus{}criterion}\PY{p}{,} 
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tab:blue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+    \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{o}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+    \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AIC criterion}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}
+    \PY{n}{bic\PYZus{}criterion}\PY{p}{,} 
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tab:orange}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+    \PY{n}{marker}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{o}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+    \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BIC criterion}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{vlines}\PY{p}{(}
+    \PY{n}{index\PYZus{}alpha\PYZus{}path\PYZus{}bic}\PY{p}{,}
+    \PY{n}{bic\PYZus{}criterion}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{n}{bic\PYZus{}criterion}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{black}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Selected alpha}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{vlines}\PY{p}{(}
+    \PY{n}{index\PYZus{}alpha\PYZus{}path\PYZus{}aic}\PY{p}{,}
+    \PY{n}{aic\PYZus{}criterion}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{n}{aic\PYZus{}criterion}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{red}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{label}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Selected alpha}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 显示图例}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Information criterion}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Lasso model sequence}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Lasso model selection via AIC and BIC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../codeimage/code14.pdf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}

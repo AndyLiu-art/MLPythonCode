@@ -1,0 +1,118 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 导入操作系统库}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{c+c1}{\PYZsh{} 更改工作目录}
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{softwares}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{applied statistics}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{pythoncodelearning}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{chap1}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sourcecode}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 导入基础计算库}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{c+c1}{\PYZsh{} 导入绘图库}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{c+c1}{\PYZsh{} 导入泊松回归模型}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{PoissonRegressor}
+\PY{c+c1}{\PYZsh{} 导入管道工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{pipeline} \PY{k+kn}{import} \PY{n}{make\PYZus{}pipeline}\PY{p}{,} \PY{n}{Pipeline}
+\PY{c+c1}{\PYZsh{} 导入数据划分工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k+kn}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+\PY{c+c1}{\PYZsh{} 导入预处理工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{FunctionTransformer}\PY{p}{,} \PY{n}{OneHotEncoder}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{StandardScaler}\PY{p}{,} \PY{n}{KBinsDiscretizer}
+\PY{c+c1}{\PYZsh{} 导入列变换工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{compose} \PY{k+kn}{import} \PY{n}{ColumnTransformer}
+\PY{c+c1}{\PYZsh{} 导入数据获取工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{n}{fetch\PYZus{}openml}
+\PY{c+c1}{\PYZsh{} 导入模型评估工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k+kn}{import} \PY{n}{mean\PYZus{}squared\PYZus{}error}
+\PY{c+c1}{\PYZsh{} 导入绘图库中的字体管理包}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{font\PYZus{}manager}
+\PY{c+c1}{\PYZsh{} 实现中文字符正常显示}
+\PY{n}{font} \PY{o}{=} \PY{n}{font\PYZus{}manager}\PY{o}{.}\PY{n}{FontProperties}\PY{p}{(}\PY{n}{fname}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Windows}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Fonts}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{SimKai.ttf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 使用seaborn风格绘图}
+\PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{seaborn\PYZhy{}v0\PYZus{}8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 获取数据}
+\PY{n}{df} \PY{o}{=} \PY{n}{fetch\PYZus{}openml}\PY{p}{(}\PY{n}{data\PYZus{}id}\PY{o}{=}\PY{l+m+mi}{41214}\PY{p}{,} \PY{n}{as\PYZus{}frame}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{parser}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pandas}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{frame}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 新增一类}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ClaimNb}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{/} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Exposure}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 标准化数据}
+\PY{c+c1}{\PYZsh{} 构造管道，取对数变换，并且对其做标准化}
+\PY{n}{log\PYZus{}scale\PYZus{}transformer} \PY{o}{=} \PY{n}{make\PYZus{}pipeline}\PY{p}{(}
+    \PY{n}{FunctionTransformer}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{,} \PY{n}{validate}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{,} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 列变换}
+\PY{n}{linear\PYZus{}model\PYZus{}preprocessor} \PY{o}{=} \PY{n}{ColumnTransformer}\PY{p}{(}
+    \PY{p}{[}
+        \PY{p}{(}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{passthrough\PYZus{}numeric}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 变换名称}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{passthrough}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 变换方式}
+            \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BonusMalus}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{c+c1}{\PYZsh{} 变换对象}
+        \PY{p}{)}\PY{p}{,}
+        \PY{p}{(}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{binned\PYZus{}numeric}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 变换名称}
+            \PY{n}{KBinsDiscretizer}\PY{p}{(}\PY{n}{n\PYZus{}bins}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{subsample}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{l+m+mf}{2e5}\PY{p}{)}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{,} \PY{c+c1}{\PYZsh{} 变换方式}
+            \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VehAge}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DrivAge}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{c+c1}{\PYZsh{} 变换对象}
+        \PY{p}{)}\PY{p}{,}
+        \PY{p}{(}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{log\PYZus{}scaled\PYZus{}numeric}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 变换名称}
+            \PY{n}{log\PYZus{}scale\PYZus{}transformer}\PY{p}{,} \PY{c+c1}{\PYZsh{} 变换方式}
+            \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{c+c1}{\PYZsh{} 变换对象}
+        \PY{p}{)}\PY{p}{,}
+        \PY{p}{(}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{onehot\PYZus{}categorical}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} 变换名称}
+            \PY{n}{OneHotEncoder}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{c+c1}{\PYZsh{} 变换方式}
+            \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VehBrand}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VehPower}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VehGas}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Region}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Area}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{c+c1}{\PYZsh{} 变换对象}
+        \PY{p}{)}
+    \PY{p}{]}\PY{p}{,}
+    \PY{n}{remainder}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{drop}\PY{l+s+s2}{\PYZdq{}} \PY{c+c1}{\PYZsh{} 剩下的变量的处理方式}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 划分数据集，这是对一个dataframe进行划分}
+\PY{n}{df\PYZus{}train}\PY{p}{,} \PY{n}{df\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.33}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 训练集的样本量}
+\PY{n}{n\PYZus{}samples} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 管道工具，建立泊松回归模型}
+\PY{n}{poisson\PYZus{}glm} \PY{o}{=} \PY{n}{Pipeline}\PY{p}{(}
+    \PY{p}{[}
+        \PY{p}{(}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{preprocessor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+            \PY{n}{linear\PYZus{}model\PYZus{}preprocessor}
+        \PY{p}{)}\PY{p}{,} \PY{c+c1}{\PYZsh{} 变量预处理}
+        \PY{p}{(}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{regressor}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+            \PY{n}{PoissonRegressor}\PY{p}{(}
+                \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}12}\PY{p}{,} \PY{n}{solver}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{newton\PYZhy{}cholesky}\PY{l+s+s2}{\PYZdq{}}
+            \PY{p}{)}
+        \PY{p}{)} \PY{c+c1}{\PYZsh{} 泊松回归模型}
+    \PY{p}{]}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 模型拟合}
+\PY{n}{poisson\PYZus{}glm}\PY{o}{.}\PY{n}{fit}\PY{p}{(}
+    \PY{n}{df\PYZus{}train}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{c+c1}{\PYZsh{} X， Y}
+    \PY{n}{regressor\PYZus{}\PYZus{}sample\PYZus{}weight}\PY{o}{=}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Exposure}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{c+c1}{\PYZsh{} 权重}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 模型预测}
+\PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{poisson\PYZus{}glm}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{df\PYZus{}test}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} MSE}
+\PY{n}{mse} \PY{o}{=} \PY{n}{mean\PYZus{}squared\PYZus{}error}\PY{p}{(}
+    \PY{n}{df\PYZus{}test}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} 
+    \PY{n}{y\PYZus{}pred}\PY{p}{,} 
+    \PY{n}{sample\PYZus{}weight}\PY{o}{=}\PY{n}{df\PYZus{}test}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Exposure}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{PoissonRegressor evaluation:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{mse}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+   IDpol  ClaimNb  Exposure Area  VehPower  VehAge  DrivAge  BonusMalus  \textbackslash{}
+0    1.0        1      0.10    D         5       0       55          50
+1    3.0        1      0.77    D         5       0       55          50
+2    5.0        1      0.75    B         6       2       52          50
+3   10.0        1      0.09    B         7       0       46          50
+4   11.0        1      0.84    B         7       0       46          50
+
+  VehBrand     VehGas  Density Region
+0      B12  'Regular'     1217    R82
+1      B12  'Regular'     1217    R82
+2      B12   'Diesel'       54    R22
+3      B12   'Diesel'       76    R72
+4      B12   'Diesel'       76    R72
+PoissonRegressor evaluation:
+0.5598099236977848
+\end{Verbatim}

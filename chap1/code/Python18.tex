@@ -1,0 +1,87 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 导入操作系统库}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{c+c1}{\PYZsh{} 更改工作目录}
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{softwares}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{applied statistics}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{pythoncodelearning}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{chap1}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sourcecode}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 导入基础计算库}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{c+c1}{\PYZsh{} 导入绘图库}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{c+c1}{\PYZsh{} 导入logistic回归模型}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{LogisticRegression}
+\PY{c+c1}{\PYZsh{} 导入数据集}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{n}{load\PYZus{}iris}
+\PY{c+c1}{\PYZsh{} 导入标准化工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{StandardScaler}
+\PY{c+c1}{\PYZsh{} 导入绘图库中的字体管理包}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{font\PYZus{}manager}
+\PY{c+c1}{\PYZsh{} 实现中文字符正常显示}
+\PY{n}{font} \PY{o}{=} \PY{n}{font\PYZus{}manager}\PY{o}{.}\PY{n}{FontProperties}\PY{p}{(}\PY{n}{fname}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Windows}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Fonts}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{SimKai.ttf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 使用seaborn风格绘图}
+\PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{seaborn\PYZhy{}v0\PYZus{}8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 生成数据集}
+\PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{load\PYZus{}iris}\PY{p}{(}\PY{n}{return\PYZus{}X\PYZus{}y}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{as\PYZus{}frame}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 选择y的两个标签对应的数据}
+\PY{n}{X} \PY{o}{=} \PY{n}{X}\PY{p}{[}\PY{n}{y} \PY{o}{!=} \PY{l+m+mi}{2}\PY{p}{]}
+\PY{n}{y} \PY{o}{=} \PY{n}{y}\PY{p}{[}\PY{n}{y} \PY{o}{!=} \PY{l+m+mi}{2}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} 对X标准化}
+\PY{n}{X} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 建立带惩罚的Logistic模型}
+\PY{n}{clf1} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}
+    \PY{n}{penalty}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{l1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{solver}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{liblinear}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 建立不带惩罚的Logistic模型}
+\PY{n}{clf2} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}
+    \PY{n}{penalty}\PY{o}{=}\PY{k+kc}{None}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 模型拟合}
+\PY{n}{clf1}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+\PY{n}{clf2}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 输出系数}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{clf1}\PY{o}{.}\PY{n}{coef\PYZus{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{clf2}\PY{o}{.}\PY{n}{coef\PYZus{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 标签预测}
+\PY{n}{y1\PYZus{}pred} \PY{o}{=} \PY{n}{clf1}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{n}{y2\PYZus{}pred} \PY{o}{=} \PY{n}{clf2}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 概率预测}
+\PY{n}{prob1\PYZus{}pred} \PY{o}{=} \PY{n}{clf1}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{n}{prob2\PYZus{}pred} \PY{o}{=} \PY{n}{clf2}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 输出标签}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{y1\PYZus{}pred}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{y2\PYZus{}pred}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 输出概率}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{prob1\PYZus{}pred}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{,}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{prob2\PYZus{}pred}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{,}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+[[ 0.         -0.7448795   2.4336159   1.94042766]]
+[[ 2.10062976 -3.87615098  7.68741035  8.08451415]]
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+[[0.99402636 0.00597364]
+ [0.98703596 0.01296404]
+ [0.9919501  0.0080499 ]
+ [0.98687688 0.01312312]
+ [0.99488669 0.00511331]
+ [0.98947643 0.01052357]
+ [0.99017504 0.00982496]
+ [0.99175032 0.00824968]
+ [0.98487479 0.01512521]
+ [0.99067091 0.00932909]]
+[[9.99999995e-01 4.53177934e-09]
+ [9.99999863e-01 1.37248738e-07]
+ [9.99999992e-01 8.19323638e-09]
+ [9.99999961e-01 3.86307599e-08]
+ [9.99999999e-01 1.44538132e-09]
+ [9.99999959e-01 4.11653960e-08]
+ [9.99999992e-01 8.31066378e-09]
+ [9.99999987e-01 1.25390963e-08]
+ [9.99999940e-01 5.97705622e-08]
+ [9.99999975e-01 2.46149485e-08]]
+\end{Verbatim}
