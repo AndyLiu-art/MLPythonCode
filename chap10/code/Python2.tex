@@ -1,0 +1,77 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 导入操作系统库}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{c+c1}{\PYZsh{} 更改工作目录}
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{softwares}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{applied statistics}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{pythoncodelearning}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{chap10}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sourcecode}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 导入警告库}
+\PY{k+kn}{import} \PY{n+nn}{warnings}
+\PY{c+c1}{\PYZsh{} 导入基础计算库}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{c+c1}{\PYZsh{} 导入绘图库}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{c+c1}{\PYZsh{} 导入收敛警告工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{exceptions} \PY{k+kn}{import} \PY{n}{ConvergenceWarning}
+\PY{c+c1}{\PYZsh{} 导入MLP分类器}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{neural\PYZus{}network} \PY{k+kn}{import} \PY{n}{MLPClassifier}
+\PY{c+c1}{\PYZsh{} 导入数据集工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k+kn}{import} \PY{n}{fetch\PYZus{}openml}
+\PY{c+c1}{\PYZsh{} 导入数据集划分工具}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k+kn}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+\PY{c+c1}{\PYZsh{} 导入绘图库中的字体管理包}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{font\PYZus{}manager}
+\PY{c+c1}{\PYZsh{} 实现中文字符正常显示}
+\PY{n}{font} \PY{o}{=} \PY{n}{font\PYZus{}manager}\PY{o}{.}\PY{n}{FontProperties}\PY{p}{(}\PY{n}{fname}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C:}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Windows}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{Fonts}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{SimKai.ttf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 使用seaborn风格绘图}
+\PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{seaborn\PYZhy{}v0\PYZus{}8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 加载数据}
+\PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{fetch\PYZus{}openml}\PY{p}{(}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mnist\PYZus{}784}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{version}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{return\PYZus{}X\PYZus{}y}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{as\PYZus{}frame}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{parser}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pandas}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\PY{n}{X} \PY{o}{=} \PY{n}{X} \PY{o}{/} \PY{l+m+mf}{255.0}
+\PY{c+c1}{\PYZsh{} 划分数据集}
+\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}
+    \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.7}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 构建MLP分类器}
+\PY{n}{mlp} \PY{o}{=} \PY{n}{MLPClassifier}\PY{p}{(}
+    \PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{40}\PY{p}{,} \PY{p}{)}\PY{p}{,} \PY{c+c1}{\PYZsh{} 隐藏层的个数}
+    \PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{c+c1}{\PYZsh{} 最大迭代次数}
+    \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}4}\PY{p}{,}
+    \PY{n}{solver}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sgd}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}
+    \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+    \PY{n}{learning\PYZus{}rate\PYZus{}init}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 忽视警告}
+\PY{k}{with} \PY{n}{warnings}\PY{o}{.}\PY{n}{catch\PYZus{}warnings}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{warnings}\PY{o}{.}\PY{n}{filterwarnings}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ignore}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{category}\PY{o}{=}\PY{n}{ConvergenceWarning}\PY{p}{,} \PY{n}{module}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sklearn}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} 拟合模型}
+    \PY{n}{mlp}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 训练集上和测试集上模型的分类准确率}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Training set score: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{n}{mlp}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Test set score: }\PY{l+s+si}{\PYZpc{}f}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{n}{mlp}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 开始绘图}
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} 可视化模型的权重系数}
+\PY{n}{vmin}\PY{p}{,} \PY{n}{vmax} \PY{o}{=} \PY{n}{mlp}\PY{o}{.}\PY{n}{coefs\PYZus{}}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{mlp}\PY{o}{.}\PY{n}{coefs\PYZus{}}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}
+\PY{k}{for} \PY{n}{coef}\PY{p}{,} \PY{n}{ax} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{mlp}\PY{o}{.}\PY{n}{coefs\PYZus{}}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{axes}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{matshow}\PY{p}{(}\PY{n}{coef}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{)}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{gray}\PY{p}{,} \PY{n}{vmin}\PY{o}{=}\PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{vmin}\PY{p}{,} \PY{n}{vmax}\PY{o}{=}\PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{vmax}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}yticks}\PY{p}{(}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../codeimage/code2.pdf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+Iteration 1, loss = 0.44139186
+Iteration 2, loss = 0.19174891
+Iteration 3, loss = 0.13983521
+Iteration 4, loss = 0.11378556
+Iteration 5, loss = 0.09443967
+Iteration 6, loss = 0.07846529
+Iteration 7, loss = 0.06506307
+Iteration 8, loss = 0.05534985
+Training set score: 0.986429
+Test set score: 0.953061
+\end{Verbatim}
